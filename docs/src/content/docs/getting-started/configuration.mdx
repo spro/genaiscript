@@ -40,6 +40,8 @@ script({
 })
 ```
 
+### Large and small models
+
 You can also use the `small` and `large` aliases to use the default configured small and large models.
 
 ```js 'model: "small"'
@@ -51,6 +53,11 @@ script({ model: "large" })
 ```
 
 The model can also be overriden from the [cli run command](/genaiscript/reference/cli/run#model)
+
+```sh
+genaiscript run ... --model largemodelid --small-model smallmodelid
+```
+
 or by adding the `GENAISCRIPT_DEFAULT_MODEL` and `GENAISCRIPT_DEFAULT_SMALL_MODEL` environment variables.
 
 ```txt title=".env"
