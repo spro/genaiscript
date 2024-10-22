@@ -174,6 +174,31 @@ $`- You are concise.
 `````
 
 
+### `system.agent_code`
+
+Agent that can query code
+
+
+
+
+
+`````js wrap title="system.agent_code"
+system({
+    title: "Agent that can query code"
+})
+
+const model = env.vars.agentFsModel
+
+defAgent("code", "Queries source code efficiently", 
+    "You are an expert at retreiving information about source code, investigating stack trace and answering coding questions.",
+    {
+        model,
+        tools: ["code_query"]
+    }
+)
+`````
+
+
 ### `system.agent_docs`
 
 Agent that can query on the documentation.
@@ -397,7 +422,7 @@ defAgent(
 
     - Use the information in MEMORY exclusively to answer the question in QUERY.
     - If the information in MEMORY is not enough to answer the question in QUERY, respond <NO_MEMORY>.
-    - The memory 
+    - If the information in MEMORY is not relevant to the question in QUERY, respond <NO_MEMORY>.
     `
         memories.reverse().forEach(
             ({ agent, query, answer }) =>
@@ -552,6 +577,50 @@ ChangedCode@23-23:
 [23] <white space> <changed code line>
 \`\`\`\`\`
 `
+`````
+
+
+### `system.code_query`
+
+Source code query using Treesitter
+
+
+
+-  tool `code_query`: Uses tree-sitter to query code
+
+`````js wrap title="system.code_query"
+system({
+    title: "Source code query using Treesitter",
+})
+
+defTool(
+    "code_query",
+    "Uses tree-sitter to query code",
+    {
+        type: "object",
+        properties: {
+            filename: {
+                type: "string",
+                description:
+                    "Path of the file to search, relative to the workspace.",
+            },
+            query: {
+                type: "string",
+                description: "code query using tree-sitter syntax",
+            },
+        },
+        required: ["filename", "query"],
+    },
+    async (args) => {
+        const { filename, query } = args
+        const file = await workspace.readText(filename)
+        if (!file.content) return "<file_not_found>"
+        const res = await parsers.code(file, query)
+        if (!res) return "<no_match_found>"
+        return YAML.stringify(res)
+    }
+)
+
 `````
 
 

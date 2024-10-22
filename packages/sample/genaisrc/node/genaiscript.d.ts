@@ -71,6 +71,7 @@ interface PromptLike extends PromptDefinition {
 
 type SystemPromptId = OptionsOrString<
     | "system"
+    | "system.agent_code"
     | "system.agent_docs"
     | "system.agent_fs"
     | "system.agent_git"
@@ -80,6 +81,7 @@ type SystemPromptId = OptionsOrString<
     | "system.agent_user_input"
     | "system.annotations"
     | "system.changelog"
+    | "system.code_query"
     | "system.diagrams"
     | "system.diff"
     | "system.explanations"
@@ -124,6 +126,7 @@ type SystemPromptId = OptionsOrString<
 >
 
 type SystemToolId = OptionsOrString<
+    | "agent_code"
     | "agent_docs"
     | "agent_fs"
     | "agent_git"
@@ -131,6 +134,7 @@ type SystemToolId = OptionsOrString<
     | "agent_interpreter"
     | "agent_memory"
     | "agent_user_input"
+    | "code_query"
     | "fs_diff_files"
     | "fs_find_files"
     | "fs_read_file"
